@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rest Countries</title>
+    <link rel="shortcut icon" href="H-logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <main>
+        <h1>All Country Information</h1>
+        <section id="section">
+        </section>
+    </main>
+
+    <script>
+
+        fetch('https://restcountries.com/v3.1/all')
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                for (let i = 0; i < data.length; i++) {
+                    const countryShortName = data[i].altSpellings[0];
+                    const countryFullName = data[i].name.common;
+                    //country name
+                    const name = ` Country Name:
+                     ${countryFullName}, ${countryShortName}`;
+                    //Capital
+                    let capital;
+                    if (data[i].capital) {
+                        capital = data[i].capital[0];
+                    }
+                    else{
+                        capital = countryFullName
+                    }
+                    //Area
+                    const area = data[i].area;
+                    //Population
+                    const population = data[i].population;
+                    //Region
+                    const region = data[i].region;
+                    // Flag 
+                    const flags = data[i].flags.png;
+
+                    // console.log(countryData);
+                    divCountries((i+1), flags, name, capital, area, population);
+                }
+            })
+
+        function divCountries(serial, imgSrc, countryName, capitalName, totalArea, totalPopulation) {
+            const mainSection = document.getElementById("section");
+            mainSection.style.display = 'flex';
+            mainSection.style.flexWrap = 'wrap';
+            const divCountries = document.createElement("div");
+            divCountries.className = 'countries1';
+            divCountries.style.margin = '0.5rem';
+            divCountries.style.padding = '1rem';
+            divCountries.style.backgroundColor = 'lightgray';
+            divCountries.style.boxShadow = '5px 5px 15px lightsalmon';
+            divCountries.style.borderRadius = '10px';
+            divCountries.style.width = '30%';
+            //Flag
+            const cFlag = document.createElement('aside');
+            cFlag.className = 'flag';
+            // cFlag.innerText = 'Flag';
+            const flagImg = document.createElement('img');
+            flagImg.src = imgSrc;
+            flagImg.style.width = '150px';
+            flagImg.style.margin = '10px'
+            cFlag.appendChild(flagImg);
+            //Count
+            const cSerial = document.createElement("h2");
+            cSerial.className = 'serial';
+            cSerial.innerText = serial;
+            //H1 create country name
+            const cName = document.createElement("h2");
+            cName.className = 'countries-name';
+            cName.innerText = countryName;
+            //h2 capital name
+            const cCapital = document.createElement('h3');
+            cCapital.className = 'capital';
+            cCapital.innerText = 'Capital: ' + capitalName;
+            // Total Area
+            const cArea = document.createElement('h4');
+            cArea.className = 'area';
+            cArea.innerText = 'Area: ' + totalArea + ' km²';
+            // Population
+            const cPopulation = document.createElement('h4');
+            cPopulation.className = 'population';
+            cPopulation.innerText = 'Population: ' + totalPopulation;
+
+            divCountries.appendChild(cFlag);
+            divCountries.appendChild(cSerial);
+            divCountries.appendChild(cName);
+            divCountries.appendChild(cCapital);
+            divCountries.appendChild(cArea);
+            divCountries.appendChild(cPopulation);
+            mainSection.appendChild(divCountries);
+
+            
+        }
+
+    </script>
+</body>
+
+</html>
